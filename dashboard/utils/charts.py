@@ -124,38 +124,3 @@ def trend_chart(df, title="Tren Sentimen per Bulan"):
 
     fig.update_layout(_dark_layout(title=title, height=400, xaxis_title="", yaxis_title="Jumlah Ulasan"))
     return fig
-
-
-def wordcloud_by_sentiment(df):
-    """Render wordclouds for positive and negative reviews using matplotlib."""
-    from wordcloud import WordCloud
-    import matplotlib.pyplot as plt
-
-    for sentiment in ["Positif", "Negatif"]:
-        texts = df[df["sentimen_label"] == sentiment]["content"]
-        if texts.empty:
-            continue
-        combined = " ".join(texts.dropna().astype(str))
-
-        if not combined.strip():
-            continue
-
-        fig, ax = plt.subplots(figsize=(14, 3.5))
-        fig.patch.set_facecolor(COLORS["bg"])
-        ax.set_facecolor(COLORS["bg"])
-
-        wc = WordCloud(
-            width=1600, height=400, max_words=100,
-            background_color=COLORS["card"],
-            colormap="Greens" if sentiment == "Positif" else "Reds",
-            contour_width=1, contour_color=COLORS["accent"],
-        ).generate(combined)
-
-        ax.imshow(wc, interpolation="bilinear")
-        ax.axis("off")
-        ax.set_title(f"Wordcloud — {sentiment} ({len(texts)} ulasan)",
-                     color=COLORS["text"], fontsize=13, pad=10)
-
-        import streamlit as st
-        st.pyplot(fig, use_container_width=True)
-        plt.close(fig)

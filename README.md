@@ -37,9 +37,13 @@ Buka `http://localhost:8501` di browser.
 3. Pilih repo `MFajarFebrian/Opinitas`
 4. **Main file path**: `dashboard/app.py`
 5. **Requirements file**: `dashboard/requirements.txt` (otomatis terdeteksi)
-6. Deploy
+6. ⚠️ **PENTING — Advanced settings**: pilih **Python 3.11** (bukan default 3.14).
+   `scikit-learn==1.6.1` (dipakai model pickle) hanya punya wheel prebuilt untuk Python ≤3.11;
+   di 3.14 ia build dari source → sangat lambat atau gagal.
+7. Deploy
 
 > Catatan: `.streamlit/config.toml` ada di root repo agar theme terdeteksi oleh Cloud.
+> Streamlit Cloud **tidak membaca `runtime.txt`** — versi Python harus dipilih manual di UI.
 
 ## Struktur Repo
 

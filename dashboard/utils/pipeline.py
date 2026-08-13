@@ -11,7 +11,6 @@ import joblib
 import pandas as pd
 import numpy as np
 from functools import lru_cache
-from tqdm import tqdm
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 
