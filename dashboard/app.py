@@ -115,12 +115,15 @@ with st.sidebar:
 
     st.divider()
 
-    search_q = st.text_input("Cari Aplikasi", placeholder="Ketik: gemini, chatgpt, whatsapp...")
-    if st.button("Cari", width="stretch"):
+    # Form pencarian: Enter di textbox otomatis submit (tanpa klik tombol)
+    with st.form("search_form", clear_on_submit=False):
+        search_q = st.text_input("Cari Aplikasi", placeholder="Ketik: gemini, chatgpt, whatsapp...")
+        submitted = st.form_submit_button("Cari", width="stretch")
+
+    if submitted:
         if search_q.strip():
             with st.spinner("Mencari di Google Play..."):
                 st.session_state["search_results"] = search_apps(search_q.strip())
-                st.rerun()
         else:
             st.session_state["search_results"] = None
 
