@@ -1,0 +1,70 @@
+# ── Root ──
+*.docx
+*.pdf
+*.tmp
+*.xlsx
+*.png
+*.jpg
+*.jpeg
+*.html
+New Text Document.txt
+IDEA.md
+
+# ── Folders yang TIDAK di-deploy ──
+_archive/
+.hermes/
+.obsidian/
+.tmp.drivedownload/
+.tmp.driveupload/
+.agents/
+writing/
+notebooks/
+references/
+reports/
+results/
+scripts/
+tools/
+flowcharts/
+data/screenshots/
+data/docs/
+data/models/bertopic_model/
+data/raw/
+
+# ── Data files besar ──
+data/raw_gemini.csv
+data/preprocessed.csv
+data/bertopic_labeled.csv
+data/semisupervised_labeled.csv
+data/sentiment_labeled_v2.csv
+data/pseudo_label_review.csv
+data/pseudo_label_review.xlsx
+data/seed_validation_200.csv
+data/roberta_labeled.csv
+data/Label_Manual.xlsx
+data/Label_Manual_filled.xlsx
+data/comparison_label_distribution.csv
+data/comparison_label_transitions.csv
+
+# ── Model lama (NB) ──
+models/nb_sentiment.pkl
+models/nb_aspect.pkl
+models/cnb_sentiment.pkl
+models/cnb_aspect_classifier.pkl
+models/mnb_aspect_classifier.pkl
+models/lr_aspect.pkl
+
+# ── Vectorizer lama ──
+data/tfidf_vectorizer.pkl
+data/tfidf_vectorizer.pkl
+
+# ── Dashboard lama ──
+dashboard_consumer/
+dashboard/utils/styling.py
+dashboard/utils/model_metrics.py
+dashboard/model_metrics.json
+
+# ── Python ──
+__pycache__/
+*.pyc
+*.pyo
+desktop.ini
