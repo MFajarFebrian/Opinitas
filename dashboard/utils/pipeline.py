@@ -154,14 +154,14 @@ def predict_batch_lr(texts: list[str], progress_callback=None) -> pd.DataFrame:
     m = _load_models()
 
     # Preprocess each text
-    _cb("Preprocessing teks (case folding, normalisasi, stemming)...", 10)
+    _cb("Preprocessing teks (case folding, noise removal, slang normalization, stopword, stemming)...", 10)
     cleaned = []
     total = len(texts)
     for i, t in enumerate(texts):
         cleaned.append(clean_strict(t))
         if total > 0 and i % max(1, total // 20) == 0:
             pct = 10 + int((i / total) * 35)  # 10% -> 45%
-            _cb("Preprocessing teks (case folding, normalisasi, stemming)...", pct)
+            _cb("Preprocessing teks (case folding, noise removal, slang normalization, stopword, stemming)...", pct)
 
     _cb("Preprocessing teks selesai", 45)
 
