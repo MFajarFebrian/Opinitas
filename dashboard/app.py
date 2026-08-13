@@ -177,16 +177,30 @@ if run:
             st.error("Model gagal menghasilkan prediksi.")
         else:
             df_pred["sentimen_label"] = df_pred["sentimen_label"].str.title()
-            df_merged = df_raw.merge(
-                df_pred[["text_original", "sentimen_label", "sentimen_conf",
-                         "aspek", "aspek_conf", "text_clean"]].rename(
-                    columns={"text_original": "content"}),
-                on="content", how="inner"
-            )
-            df_merged["at"] = pd.to_datetime(df_merged["at"], errors="coerce")
-            st.session_state["df_result"] = df_merged
+
+            # ⚠️ Positional attach, BUKAN merge on content.
+            # Merge pada kolom teks akan meledak secara kartesian ketika
+            # ada ulasan dengan konten duplikat (umum di Google Play),
+            # menghasilkan baris > jumlah yang diminta (misal 500 -> 650).
+            df_result = df_raw.copy()
+
+            # Jumlah baris prediksi bisa lebih pendek dari df_raw jika ada
+            # teks kosong; ambil baris df_raw yang berpasangan dengan prediksi.
+            n_pred = len(df_pred)
+            n_raw = len(df_raw)
+            if n_pred < n_raw:
+                df_result = df_result.iloc[:n_pred].copy()
+
+            pred_cols = ["sentimen_label", "sentimen_conf", "aspek",
+                         "aspek_conf", "text_clean"]
+            for col in pred_cols:
+                if col in df_pred.columns:
+                    df_result[col] = df_pred[col].values[: len(df_result)]
+
+            df_result["at"] = pd.to_datetime(df_result["at"], errors="coerce")
+            st.session_state["df_result"] = df_result
             st.session_state["app_id"] = app_id
-            st.session_state["n_reviews"] = count
+            st.session_state["n_reviews"] = len(df_result)
             st.rerun()
 
 # ── MAIN BODY ──
