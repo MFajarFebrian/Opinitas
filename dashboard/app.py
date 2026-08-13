@@ -130,14 +130,12 @@ with st.sidebar:
     results = st.session_state.get("search_results") or []
     app_id = None
     if results:
-        st.markdown(f"**Hasil Pencarian** ({len(results)})")
-        for r in results[:5]:
-            label = f"{r['title']}"
-            sub = f"{r['appId']} ⭐{r.get('score', '')}"
-            if st.button(f"{label}\n{sub}", key=f"res_{r['appId']}_{r['title']}", width="stretch"):
-                st.session_state["selected_app_id"] = r["appId"]
-                st.session_state["search_results"] = None
-                st.rerun()
+        opts = [f"{r['title']} — {r['appId']}" for r in results]
+        sel = st.selectbox("Hasil Pencarian", opts, label_visibility="collapsed",
+                           placeholder="Pilih aplikasi...")
+        idx = opts.index(sel) if sel in opts else 0
+        app_id = results[idx]["appId"]
+        st.session_state["selected_app_id"] = app_id
     elif st.session_state.get("search_results") is not None:
         st.warning("Tidak ada hasil untuk pencarian ini.")
 
