@@ -108,7 +108,7 @@ with st.sidebar:
     ai_cols = st.columns(3)
     for i, (name, aid) in enumerate(AI_APPS):
         with ai_cols[i % 3]:
-            if st.button(name, key=f"ai_{aid}", use_container_width=True):
+            if st.button(name, key=f"ai_{aid}", width="stretch"):
                 st.session_state["selected_app_id"] = aid
                 st.session_state["search_results"] = None
                 st.rerun()
@@ -116,7 +116,7 @@ with st.sidebar:
     st.divider()
 
     search_q = st.text_input("Cari Aplikasi", placeholder="Ketik: gemini, chatgpt, whatsapp...")
-    if st.button("Cari", use_container_width=True):
+    if st.button("Cari", width="stretch"):
         if search_q.strip():
             with st.spinner("Mencari di Google Play..."):
                 st.session_state["search_results"] = search_apps(search_q.strip())
@@ -136,7 +136,7 @@ with st.sidebar:
                                 value=prefill, placeholder="com.contoh.aplikasi")
 
     count = st.number_input("Jumlah Ulasan", min_value=50, max_value=100000, value=500, step=100)
-    run = st.button("Tarik & Analisis", use_container_width=True)
+    run = st.button("Tarik & Analisis", width="stretch")
 
 # ── SCRAPE & PREDICT ──
 if run:
@@ -218,13 +218,13 @@ st.divider()
 
 a, b = st.columns([2, 3])
 with a:
-    st.plotly_chart(donut_sentiment(df_res, title=""), use_container_width=True)
+    st.plotly_chart(donut_sentiment(df_res, title=""), width="stretch")
 with b:
-    st.plotly_chart(_stacked_aspect_bar(df_res), use_container_width=True)
-st.plotly_chart(bar_aspect(df_res, title=""), use_container_width=True)
+    st.plotly_chart(_stacked_aspect_bar(df_res), width="stretch")
+st.plotly_chart(bar_aspect(df_res, title=""), width="stretch")
 
 # ── Tren Sentimen per Bulan ──
-st.plotly_chart(trend_chart(df_res), use_container_width=True)
+st.plotly_chart(trend_chart(df_res), width="stretch")
 
 # ── Top 10 Keywords per Aspek ──
 st.markdown("#### Top 10 Kata Kunci per Aspek")
@@ -249,7 +249,7 @@ kw_rows = []
 for asp, words in aspect_kw.items():
     kw_rows.append({"Aspek": asp.replace("_", " ").title(), **{f"#{i+1}": w for i, w in enumerate(words)}})
 kw_df = pd.DataFrame(kw_rows).set_index("Aspek")
-st.dataframe(kw_df, use_container_width=True)
+st.dataframe(kw_df, width="stretch")
 
 # ── Filter + Paginated Data Table ──
 st.markdown("#### Detail Ulasan per Aspek & Sentimen")
@@ -302,7 +302,7 @@ for col, label in [("at", "Tanggal"), ("userName", "Username"),
     table_cols.append((label, series))
 
 df_display = pd.DataFrame({label: s.values for label, s in table_cols})
-st.dataframe(df_display, use_container_width=True, height=450,
+st.dataframe(df_display, width="stretch", height=450,
              column_config={"Ulasan": st.column_config.TextColumn(width="large"),
                             "Tanggal": st.column_config.TextColumn(width="small"),
                             "Rating": st.column_config.NumberColumn(width="small")},
@@ -317,5 +317,5 @@ st.download_button(
     data=csv,
     file_name=f"{st.session_state.get('app_id', 'ulasan')}_hasil_absa.csv",
     mime="text/csv",
-    use_container_width=True,
+    width="stretch",
 )
