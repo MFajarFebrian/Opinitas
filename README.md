@@ -2,6 +2,8 @@
 
 Dashboard analisa ulasan sentimen dan aspek aplikasi AI pada Google Play Store menggunakan **Logistic Regression**.
 
+🌐 **Live demo:** [Opinitas on Streamlit Community Cloud](https://opinitas.streamlit.app)
+
 ## Fitur
 
 - Scraping ulasan langsung dari Google Play Store
@@ -28,20 +30,31 @@ streamlit run dashboard/app.py
 
 Buka `http://localhost:8501` di browser.
 
+## Deploy ke Streamlit Community Cloud
+
+1. Push repo ini ke GitHub
+2. Buka [share.streamlit.io](https://share.streamlit.io) → **Create app**
+3. Pilih repo `MFajarFebrian/Opinitas`
+4. **Main file path**: `dashboard/app.py`
+5. **Requirements file**: `dashboard/requirements.txt` (otomatis terdeteksi)
+6. Deploy
+
+> Catatan: `.streamlit/config.toml` ada di root repo agar theme terdeteksi oleh Cloud.
+
 ## Struktur Repo
 
 ```
 Opinitas/
+├── .streamlit/
+│   └── config.toml           # Theme config (root, wajib untuk Cloud)
 ├── dashboard/
 │   ├── app.py                    # Entry point Streamlit
 │   ├── requirements.txt          # Python dependencies
-│   ├── .streamlit/
-│   │   └── config.toml           # Theme config
 │   └── utils/
 │       ├── __init__.py
 │       ├── scraper.py            # Google Play scraping
 │       ├── pipeline.py           # Preprocessing + LR inference
-│       └── charts.py             # Plotly + Wordcloud helpers
+│       └── charts.py             # Plotly helpers
 ├── models/
 │   ├── lr_sentiment.pkl          # Logistic Regression (sentimen)
 │   └── lr_aspect_classifier.pkl  # Logistic Regression (aspek)
@@ -65,7 +78,7 @@ Opinitas/
 |-------|-----------|
 | UI/UX | Pengalaman pengguna, antarmuka, kemudahan |
 | Kualitas Konten | Kualitas jawaban, akurasi AI |
-| Fitur | Fiturgambar, video, edit, canvas |
+| Fitur | Fitur gambar, video, edit, canvas |
 | Performa | Error, crash, lemot, bug |
 
 ## Pipeline
@@ -81,9 +94,9 @@ Ulasan mentah
 
 ## Teknologi
 
-- Python 3.13
+- Python 3.11+ (Cloud default)
 - Streamlit (dashboard)
-- scikit-learn (Logistic Regression, TF-IDF)
+- scikit-learn 1.6.1 (Logistic Regression, TF-IDF)
 - Sastrawi + indoNLP (preprocessing Bahasa Indonesia)
 - Plotly (visualisasi)
 - google-play-scraper (scraping ulasan)
