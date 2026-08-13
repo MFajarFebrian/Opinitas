@@ -120,20 +120,28 @@ with st.sidebar:
         if search_q.strip():
             with st.spinner("Mencari di Google Play..."):
                 st.session_state["search_results"] = search_apps(search_q.strip())
+                st.rerun()
+        else:
+            st.session_state["search_results"] = None
 
     results = st.session_state.get("search_results") or []
     app_id = None
     if results:
-        opts = [f"{r['title']} ({r['appId']})" for r in results]
-        selected = st.selectbox("Pilih Aplikasi", range(len(opts)),
-                                format_func=lambda i: opts[i])
-        if selected is not None and selected < len(results):
-            app_id = results[selected]["appId"]
+        st.markdown(f"**Hasil Pencarian** ({len(results)})")
+        for r in results[:5]:
+            label = f"{r['title']}"
+            sub = f"{r['appId']} ⭐{r.get('score', '')}"
+            if st.button(f"{label}\n{sub}", key=f"res_{r['appId']}_{r['title']}", width="stretch"):
+                st.session_state["selected_app_id"] = r["appId"]
+                st.session_state["search_results"] = None
+                st.rerun()
+    elif st.session_state.get("search_results") is not None:
+        st.warning("Tidak ada hasil untuk pencarian ini.")
 
     prefill = st.session_state.get("selected_app_id", "")
     if not app_id:
         app_id = st.text_input("Atau masukkan App ID manual",
-                                value=prefill, placeholder="com.contoh.aplikasi")
+                                value=prefill or "", placeholder="com.contoh.aplikasi")
 
     count = st.number_input("Jumlah Ulasan", min_value=50, max_value=100000, value=500, step=100)
     run = st.button("Tarik & Analisis", width="stretch")
